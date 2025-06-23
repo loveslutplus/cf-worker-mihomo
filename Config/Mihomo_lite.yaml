@@ -388,6 +388,7 @@ dns:
       - "quic://2025.dns1.top" # 关圣 DNS over DOQ
       - "quic://dns.alidns.com" # 阿里 DNS over DOQ
   nameserver:
+    - "quic://dns.adguard-dns.com" # AdGuard DNS over DOQ
     - "https://cloudflare-dns.com/dns-query#h3=true" # Cloudflare DNS over H3
     - "https://dns.google/dns-query#h3=true" # Google DNS over H3
   proxy-server-nameserver: # 代理节点域名解析服务器，仅用于解析代理节点的域名
