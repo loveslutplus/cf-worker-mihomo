@@ -18,7 +18,7 @@ proxy-groups:
 
   - { name: ⚪绕过连接, type: select, hidden: true, proxies: [PASS] }
 
-  - { name: 🎯全球直连, type: select, proxies: [🎯全局直连, 🚀全球代理] }
+  - { name: 🎯全球直连, type: select, proxies: [🎯全局直连, 🚀全球代理, 🟢手动选择, ♻️自动选择] }
 
   - { name: ♻️自动选择, <<: *u, tolerance: 1, type: url-test }
 
@@ -344,7 +344,7 @@ sub-rules:
     - RULE-SET,ByteDance,字节跳动 # 字节跳动，包含抖音、今日头条等
     - RULE-SET,Tencent,腾讯 # 腾讯相关服务，包括 QQ、腾讯云等
     - RULE-SET,Alibaba,阿里巴巴 # 阿里巴巴，涵盖云计算、电商等
-    - RULE-SET,China,⚪绕过连接
+    - RULE-SET,CN,⚪绕过连接
     - RULE-SET,Fakeip_Filter,⚪绕过连接
   SUB-IPCIDR:
     # 国内服务
@@ -356,7 +356,7 @@ sub-rules:
     - RULE-SET,Alibabacidr,阿里巴巴,no-resolve
     - RULE-SET,BiliBilicidr,哔哩哔哩,no-resolve
     - RULE-SET,ChinaMediacidr,中国媒体,no-resolve
-    - RULE-SET,Chinacidr,🎯全球直连
+    - RULE-SET,CNcidr,🎯全球直连
 
     # 国际服务
     - RULE-SET,Applecidr,Apple,no-resolve
@@ -1151,15 +1151,15 @@ rule-providers:
 
   # ------------------------------------------------------------
   # 自定义 规则
-  China:
+  CN:
     <<: *domain_mrs
     url: "https://cdn.jsdmirror.com/gh/Kwisma/clash-rules@release/direct.mrs"
-    path: ./ruleset/China_Domain.mrs
+    path: ./ruleset/CN_Domain.mrs
 
-  Chinacidr:
+  CNcidr:
     <<: *ipcidr_mrs
     url: "https://cdn.jsdmirror.com/gh/Kwisma/clash-rules@release/cncidr.mrs"
-    path: ./ruleset/China_IP.mrs
+    path: ./ruleset/CN_IP.mrs
 
   4GTV:
     <<: *domain_mrs

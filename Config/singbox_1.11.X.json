@@ -1,7 +1,8 @@
 {
     "log": {
         "disabled": false,
-        "level": "warn",
+        "level": "info",
+        "output": "",
         "timestamp": true
     },
     "experimental": {
@@ -70,8 +71,8 @@
             },
             {
                 "rule_set": [
-                    "CN",
-                    "Private"
+                    "geosite-cn",
+                    "geosite-private"
                 ],
                 "server": "DIRECT-DNS"
             },
@@ -84,8 +85,10 @@
                 "rewrite_ttl": 1
             }
         ],
-        "final": "PROXY-DNS",
+        "disable_cache": true,
+        "disable_expire": true,
         "independent_cache": true,
+        "final": "PROXY-DNS",
         "strategy": "prefer_ipv4"
     },
     "inbounds": [
@@ -120,8 +123,58 @@
     "route": {
         "auto_detect_interface": true,
         "final": "🚀 节点选择",
-        "rules": [],
-        "rule_set": []
+        "rules": [
+            {
+                "action": "sniff"
+            },
+            { 
+                "action": "resolve"
+            },
+            { 
+                "type": "logical", 
+                "mode": "or", 
+                "rules": [
+                  { "port": [53] },
+                  { "protocol": "dns" }
+                ], 
+                "action": "hijack-dns"
+            },
+            { 
+                "action": "route-options", 
+                "udp_disable_domain_unmapping": true, 
+                "udp_connect": true, 
+                "udp_timeout": "5m",
+                "disable_cache": true
+            },
+            {
+                "ip_is_private": true,
+                "outbound": "🎯 全球直连"
+            },
+            {
+                "clash_mode": "direct",
+                "outbound": "🎯 全球直连"
+            },
+            {
+                "clash_mode": "global",
+                "outbound": "🚀 节点选择"
+            }
+        ],
+        "rule_set": [
+            {
+                "tag": "geosite-private",
+                "type": "remote",
+                "url": "https://cdn.jsdmirror.com/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs",
+                "format": "binary",
+                "download_detour": "🎯 全球直连"
+            },
+            {
+                "tag": "geosite-cn",
+                "type": "remote",
+                "url": "https://cdn.jsdmirror.com/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
+                "format": "binary",
+                "download_detour": "🎯 全球直连"
+            }
+        ]
     },
     "outbounds": []
 }

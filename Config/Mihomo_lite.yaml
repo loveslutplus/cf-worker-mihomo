@@ -1,79 +1,3 @@
-# mihomo (Clash Meta) 懒人配置
-# 版本：v1.19.4
-# 作者：Kwisma
-# 频道：https://t.me/Marisa_kristi
-# 配置：https://cdn.jsdmirror.com/gh/Kwisma/cf-worker-mihomo/main/main/Config/Mihomo.yaml
-# Github：https://github.com/Kwisma/cf-worker-mihomo
-# 修改自官方示例规则 https://wiki.metacubex.one/example/#meta
-# 不理解的地方建议对照 虚空终端 (Clash Meta) Docs 进行理解
-# 虚空终端 (Clash Meta) Docs 地址: https://wiki.metacubex.one
-# 转载请保留此注释测
-# 注意：必须关闭 DNS 覆写才能防止 DNS 泄漏
-
-# ------------------------------------------------------------
-# 锚点区
-proxy: &proxy { type: select, include-all: true, proxies: [🚀全球代理, 🎯全球直连, ♻️自动选择, ⚡️均衡负载, 🔯故障转移, 🇭🇰香港自动, 🇹🇼台湾自动, 🇯🇵日本自动, 🇺🇸美国自动, 🇸🇬新加坡自动, 🇰🇷韩国自动] }
-direct: &direct { type: select, include-all: true, proxies: [🎯全球直连, 🚀全球代理, ♻️自动选择, ⚡️均衡负载, 🔯故障转移, 🇭🇰香港自动, 🇹🇼台湾自动, 🇯🇵日本自动, 🇺🇸美国自动, 🇸🇬新加坡自动, 🇰🇷韩国自动] }
-ipcidr_mrs: &ipcidr_mrs { type: http, interval: 86400, behavior: ipcidr, format: mrs, proxy: 🎯全球直连 }
-domain_mrs: &domain_mrs { type: http, interval: 86400, behavior: domain, format: mrs, proxy: 🎯全球直连 }
-# 延迟检测 URL
-p: &p
-  type: http
-  interval: 3600 # 更新provider的时间
-  size-limit: 0 # 限制下载文件的最大大小，默认为 0 即不限制文件大小，单位为字节 (b)
-  header: # 自定义 http 请求头
-    User-Agent:
-      - meta;clash.meta;Clash/v1.18.0;clash
-  health-check: # 健康检查 (延迟测试)
-    enable: true
-    url: https://www.gstatic.com/generate_204 # 健康检查测试地址
-    interval: 300 # 健康检查间隔
-    timeout: 5000 # 健康检查超时时间
-    lazy: true # 懒惰状态
-override: &override
-  tfo: false # 启用 TCP Fast Open, 仅生效于 TCP 协议
-  mptcp: false # 启用 TCP Multi Path, 仅生效于 TCP 协议
-  udp: true # 是否允许 UDP 通过代理，默认为 false
-  udp-over-tcp: false # 启用 UDP over TCP，默认 false
-  skip-cert-verify: true # 跳过证书验证，仅适用于使用 tls 的协议
-  ip-version: ipv4-prefer # 可选：dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer ,默认使用 dual, ipv4: 仅使用 IPv4, ipv6: 仅使用 IPv6, ipv4-prefer: 优先使用 IPv4，对于 TCP 会进行双栈解析，并发链接但是优先使用 IPv4 链接，UDP 则为双栈解析，获取结果中的第一个 IPv4, ipv6-prefer:优先使用 IPv6，对于 TCP 会进行双栈解析，并发链接但是优先使用 IPv6 链接，UDP 则为双栈解析，获取结果中的第一个 IPv6
-# URL 测试配置
-u: &u
-  type: url-test # 测试类型
-  tolerance: 1 # 自动选择切换容差
-  strategy: consistent-hashing # 负载均衡策略
-  url: https://www.gstatic.com/generate_204 #健康检查测试地址
-  interval: 300 #健康检查间隔，如不为 0 则启用定时测试，单位为秒
-  lazy: true # 懒惰状态
-  timeout: 5000 # 健康检查超时时间，单位为毫秒
-  max-failed-times: 5 # 最大失败次数，超过则触发一次强制健康检查，默认 5
-  include-all: true # 引入所有代理集合
-
-######################## start ########################
-# 订阅链接配置区
-proxy-providers:
-  # 第一个代理提供者
-  provider1:
-    <<: *p # 继承通用配置
-    url: [订阅链接]
-    path: ./proxies/provider1.yaml
-    override:
-      <<: *override
-      additional-suffix: ' 1' # 节点名添加后缀
-
-#  provider2:
-#    <<: *p # 继承通用配置
-#    url: [订阅链接]
-#    path: ./proxies/provider2.yaml
-#    override:
-#      <<: *override
-#      additional-suffix: ' 2' # 节点名添加后缀
-
-######################## end ########################
-
-#redir-port: 9797 # 重定向端口，用于透明代理
-#tproxy-port: 9898 # TProxy 端口，支持 TUN 模式
-
 port: 7892 # HTTP 代理端口
 socks-port: 7893 # SOCKS5 代理端口
 mixed-port: 7890 # HTTP/SOCKS 混合代理端口
@@ -249,124 +173,7 @@ dns:
   fake-ip-range: 198.18.0.0/16 # fake-ip 池设置
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
-    - geosite:private,CN
-    - adguardteam.github.io
-    - adrules.top
-    - amobile.music.tc.qq.com
-    - anti-ad.net
-    - api-jooxtt.sanook.com
-    - api.joox.com
-    - aqqmusic.tc.qq.com
-    - dl.stream.qqmusic.qq.com
-    - ff.dorado.sdo.com
-    - heartbeat.belkin.com
-    - isure.stream.qqmusic.qq.com
-    - joox.com
-    - lens.l.google.com
-    - local.adguard.org
-    - localhost.ptlogin2.qq.com
-    - localhost.sec.qq.com
-    - mesu.apple.com
-    - mobileoc.music.tc.qq.com
-    - music.taihe.com
-    - musicapi.taihe.com
-    - na.b.g-tun.com
-    - proxy.golang.org
-    - ps.res.netease.com
-    - shark007.net
-    - songsearch.kugou.com
-    - static.adtidy.org
-    - streamoc.music.tc.qq.com
-    - stun.l.google.com
-    - swcdn.apple.com
-    - swdist.apple.com
-    - swdownload.apple.com
-    - swquery.apple.com
-    - swscan.apple.com
-    - time-ios.apple.com
-    - time1.cloud.tencent.com
-    - trackercdn.kugou.com
-    - xnotify.xboxlive.com
-    - "*.*.xboxlive.com"
-    - +.stun.*.*
-    - +.stun.*.*.*
-    - +.stun.*.*.*.*
-    - +.stun.*.*.*.*.*
-    - localhost.*.weixin.qq.com
-    - ntp.*.com
-    - ntp1.*.com
-    - ntp2.*.com
-    - ntp3.*.com
-    - ntp4.*.com
-    - ntp5.*.com
-    - ntp6.*.com
-    - ntp7.*.com
-    - stun.*.*
-    - stun.*.*.*
-    - time.*.apple.com
-    - time.*.com
-    - time.*.edu.cn
-    - time.*.gov
-    - time1.*.com
-    - time2.*.com
-    - time3.*.com
-    - time4.*.com
-    - time5.*.com
-    - time6.*.com
-    - time7.*.com
-    - xbox.*.*.microsoft.com
-    - xbox.*.microsoft.com
-    - +.126.net
-    - +.3gppnetwork.org
-    - +.battle.net
-    - +.battlenet.com.cn
-    - +.cdn.nintendo.net
-    - +.cmbchina.com
-    - +.cmbimg.com
-    - +.direct
-    - +.example
-    - +.ff14.sdo.com
-    - +.ffxiv.com
-    - +.finalfantasyxiv.com
-    - +.gcloudcs.com
-    - +.gcloudsdk.com
-    - +.home.arpa
-    - +.invalid
-    - +.kuwo.cn
-    - +.lan
-    - +.linksys.com
-    - +.linksyssmartwifi.com
-    - +.local
-    - +.localdomain
-    - +.localhost
-    - +.market.xiaomi.com
-    - +.mcdn.bilivideo.cn
-    - +.media.dssott.com
-    - +.msftconnecttest.com
-    - +.msftncsi.com
-    - +.music.163.com
-    - +.music.migu.cn
-    - +.n0808.com
-    - +.nflxvideo.net
-    - +.ntp.org.cn
-    - +.oray.com
-    - +.orayimg.com
-    - +.pool.ntp.org
-    - +.router.asus.com
-    - +.sandai.net
-    - +.square-enix.com
-    - +.srv.nintendo.net
-    - +.steamcontent.com
-    - +.stun.playstation.net
-    - +.test
-    - +.time.edu.cn
-    - +.uu.163.com
-    - +.wargaming.net
-    - +.wggames.cn
-    - +.wotgame.cn
-    - +.wowsgame.cn
-    - +.xiami.com
-    - +.y.qq.com
+    - RULE-SET:Private,Fakeip_Filter,CN
     - dns.alidns.com
     - cloudflare-dns.com
     - dns.google
@@ -399,44 +206,28 @@ dns:
     - "quic://dns.alidns.com" # 阿里 DNS over DOQ
   direct-nameserver-follow-policy: true # 是否遵循 nameserver-policy，默认为不遵守，仅当 direct-nameserver 不为空时生效
 
-proxy-groups:
-  - { name: 🚀全球代理, type: select, proxies: [♻️自动选择, 🟢手动选择, ⚡️均衡负载, 🔯故障转移, 🎯全局直连, 🇭🇰香港自动, 🇹🇼台湾自动, 🇯🇵日本自动, 🇺🇸美国自动, 🇸🇬新加坡自动, 🇰🇷韩国自动] }
-  - { name: 🟢手动选择, <<: *u, type: select }
-  - { name: 🎯全局直连, type: select, hidden: true, proxies: [DIRECT] }
-  - { name: 🚫拒绝连接, type: select, hidden: true, proxies: [REJECT] }
-  - { name: 🚫静默拒绝, type: select, hidden: true, proxies: [REJECT-DROP] }
-  - { name: ⚪绕过连接, type: select, hidden: true, proxies: [PASS] }
-  - { name: 🪧广告拦截, type: select, proxies: [🚫静默拒绝, 🚫拒绝连接, ⚪绕过连接] }
-  - { name: 💧泄漏拦截, type: select, proxies: [🚫静默拒绝, 🚫拒绝连接, ⚪绕过连接] }
-  - { name: 🎯全球直连, type: select, proxies: [🎯全局直连, 🚀全球代理] }
-  - { name: ♻️自动选择, <<: *u, tolerance: 1, type: url-test }
-  - { name: ⚡️均衡负载, <<: *u, strategy: round-robin, type: load-balance }
-  - { name: 🔯故障转移, <<: *u, type: fallback }
-  - { name: 🇭🇰香港自动, <<: *u, hidden: true, filter: (?i)🇭🇰|\\bHK\\b|香港|Hong Kong }
-  - { name: 🇹🇼台湾自动, <<: *u, hidden: true, filter: '(?i)🇹🇼|\bTW\b|台湾|Taiwan|Tai wan' }
-  - { name: 🇯🇵日本自动, <<: *u, hidden: true, filter: '(?i)🇯🇵|\bJP\b|日本|Japan' }
-  - { name: 🇺🇸美国自动, <<: *u, hidden: true, filter: '(?i)🇺🇸|\bUS\b|美国|United States|CT' }
-  - { name: 🇸🇬新加坡自动, <<: *u, hidden: true, filter: '(?i)🇸🇬|\bSG\b|新加坡|Singapore' }
-  - { name: 🇰🇷韩国自动, <<: *u, hidden: true, filter: '(?i)🇰🇷|\bKR\b|韩国|South Korea' }
-  - { name: GLOBAL, type: select, include-all: true, proxies: [ 🚀全球代理, 🟢手动选择, 🪧广告拦截, 💧泄漏拦截, 🎯全球直连, ♻️自动选择, ⚡️均衡负载, 🔯故障转移 ], icon: https://cdn.jsdmirror.com/gh/Kwisma/cf-worker-mihomo@main/icon/webp/100/GLOBAL.webp }
-rules:
-  - GEOSITE,private,🎯全球直连
-  - RULE-SET,Advertising-ads,🪧广告拦截
-  - RULE-SET,STUN,💧泄漏拦截
-  - DST-PORT,3478,💧泄漏拦截
-  - AND,(NETWORK,TCP),(DST-PORT,5349),💧泄漏拦截
-  - AND,(NETWORK,UDP),(DST-PORT,5350),💧泄漏拦截
-  - AND,(NETWORK,UDP),(DST-PORT,5351),💧泄漏拦截
-  - AND,(NETWORK,UDP),(DST-PORT,19302),💧泄漏拦截
-  - DOMAIN-KEYWORD,stun,💧泄漏拦截
-  - GEOIP,CN,🎯全球直连
-  - MATCH,🚀全球代理
 rule-providers:
-  Advertising-ads:
-    <<: *domain_mrs
-    url: "https://cdn.jsdmirror.com/gh/TG-Twilight/AWAvenue-Ads-Rule@main/Filters/AWAvenue-Ads-Rule-Clash.mrs"
-    path: ./ruleset/Advertising_ads_Domain.mrs
-  STUN:
-    <<: *domain_mrs
-    url: "https://cdn.jsdmirror.com/gh/Kwisma/cf-worker-mihomo@main/rules/mihomo/STUN/STUN_Domain.mrs"
-    path: ./ruleset/STUN_Domain.mrs
+  CN:
+    type: http
+    interval: 86400
+    behavior: domain
+    format: mrs
+    proxy: DIRECT
+    url: "https://cdn.jsdmirror.com/gh/Kwisma/clash-rules@release/direct.mrs"
+    path: ./ruleset/China_Domain.mrs
+  Private:
+    type: http
+    interval: 86400
+    behavior: domain
+    format: mrs
+    proxy: DIRECT
+    url: "https://cdn.jsdmirror.com/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.mrs"
+    path: ./ruleset/Private_Domain.mrs
+  Fakeip_Filter:
+    type: http
+    interval: 86400
+    behavior: domain
+    format: mrs
+    proxy: DIRECT
+    url: "https://cdn.jsdmirror.com/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs"
+    path: ./ruleset/Fakeip_Filter_Domain.mrs

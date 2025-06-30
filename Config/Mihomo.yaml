@@ -249,7 +249,7 @@ dns:
   fake-ip-range: 198.18.0.1/16 # fake-ip 池设置
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
-    - RULE-SET:Private,Fakeip_Filter,China
+    - RULE-SET:Private,Fakeip_Filter,CN
     - dns.alidns.com
     - cloudflare-dns.com
     - dns.google
@@ -267,7 +267,7 @@ dns:
       - "quic://dns.nextdns.io" # NextDNS（香港） DNS over DOQ
     "+.eu":
       - "quic://dns0.eu" # 公共（欧洲） DNS over DOQ
-    "RULE-SET:Private,China":
+    "RULE-SET:Private,CN":
       - "quic://dns.18bit.cn" # 18bit DNS over DOQ
       - "quic://dns.ipv4dns.com" # 清新云 DNS over DOQ
       - "quic://2025.dns1.top" # 关圣 DNS over DOQ
@@ -640,7 +640,7 @@ sub-rules:
     - RULE-SET,ByteDance,字节跳动 # 字节跳动，包含抖音、今日头条等
     - RULE-SET,Tencent,腾讯 # 腾讯相关服务，包括 QQ、腾讯云等
     - RULE-SET,Alibaba,阿里巴巴 # 阿里巴巴，涵盖云计算、电商等
-    - RULE-SET,China,⚪绕过连接
+    - RULE-SET,CN,⚪绕过连接
     - RULE-SET,Fakeip_Filter,⚪绕过连接
   SUB-IPCIDR:
     # 国内服务
@@ -652,7 +652,7 @@ sub-rules:
     - RULE-SET,Alibabacidr,阿里巴巴,no-resolve
     - RULE-SET,BiliBilicidr,哔哩哔哩,no-resolve
     - RULE-SET,ChinaMediacidr,中国媒体,no-resolve
-    - RULE-SET,Chinacidr,🎯全球直连
+    - RULE-SET,CNcidr,🎯全球直连
 
     # 国际服务
     - RULE-SET,Applecidr,Apple,no-resolve
@@ -1462,15 +1462,15 @@ rule-providers:
     url: "https://cdn.jsdmirror.com/gh/TG-Twilight/AWAvenue-Ads-Rule@main/Filters/AWAvenue-Ads-Rule-Clash.mrs"
     path: ./ruleset/Advertising_ads_Domain.mrs
 
-  China:
+  CN:
     <<: *domain_mrs
     url: "https://cdn.jsdmirror.com/gh/Kwisma/clash-rules@release/direct.mrs"
-    path: ./ruleset/China_Domain.mrs
+    path: ./ruleset/CN_Domain.mrs
 
-  Chinacidr:
+  CNcidr:
     <<: *ipcidr_mrs
     url: "https://cdn.jsdmirror.com/gh/Kwisma/clash-rules@release/cncidr.mrs"
-    path: ./ruleset/China_IP.mrs
+    path: ./ruleset/CN_IP.mrs
 
   4GTV:
     <<: *domain_mrs

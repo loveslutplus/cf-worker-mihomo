@@ -108,5 +108,5 @@ export function applyTemplate(top, rule) {
     top['proxy-groups'] = rule['proxy-groups'] || [];
     top.rules = rule.rules || [];
     top['sub-rules'] = rule['sub-rules'] || {};
-    top['rule-providers'] = rule['rule-providers'] || {};
+    top['rule-providers'] = {...(top['rule-providers'] || {}), ...(rule['rule-providers'] || {})};
 }
